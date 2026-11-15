@@ -1,0 +1,5 @@
+Perbandingan,Spearman rho
+FastDTW vs DTW penuh (eksak),0.9797081427063227
+FastDTW vs DTW (w=4),0.8705425674399323
+DTW (w=4) vs Euclid,0.9144986552627966
+FastDTW vs Euclid,0.7614654201480264

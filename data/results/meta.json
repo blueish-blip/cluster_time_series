@@ -1,0 +1,88 @@
+{
+ "best_model": [
+  "K-Medoids",
+  "Euclid"
+ ],
+ "best_param": "k=2",
+ "n_total": 811,
+ "n_used": 547,
+ "n_weeks": 52,
+ "params": {
+  "K-Medoids|Euclid": "k=2",
+  "Hierarchical|Euclid": "k=2",
+  "HDBSCAN|Euclid": "mcs=15, ms=1",
+  "K-Medoids|DTW": "k=2",
+  "Hierarchical|DTW": "k=2",
+  "HDBSCAN|DTW": "mcs=30, ms=1",
+  "K-Medoids|FastDTW": "k=2",
+  "Hierarchical|FastDTW": "k=2",
+  "HDBSCAN|FastDTW": "mcs=30, ms=1"
+ },
+ "runtime_s": {
+  "Euclid": 0.004994603000000097,
+  "DTW": 3.1321051280000347,
+  "FastDTW": 152.71574857500002
+ },
+ "fastdtw_err": {
+  "mean": 0.03984329775179757,
+  "median": 0.01037066865153449,
+  "p95": 0.1763978399685191,
+  "exact_share": 0.3252707073548024
+ },
+ "dtw_window": 4,
+ "fdtw_radius": 1,
+ "medoids": {
+  "K-Medoids|Euclid": {
+   "0": "P79",
+   "1": "P512"
+  },
+  "Hierarchical|Euclid": {
+   "0": "P599",
+   "1": "P523"
+  },
+  "HDBSCAN|Euclid": {
+   "0": "P600",
+   "1": "P79",
+   "2": "P512"
+  },
+  "K-Medoids|DTW": {
+   "0": "P268",
+   "1": "P15"
+  },
+  "Hierarchical|DTW": {
+   "0": "P15",
+   "1": "P268"
+  },
+  "HDBSCAN|DTW": {
+   "0": "P15",
+   "1": "P638"
+  },
+  "K-Medoids|FastDTW": {
+   "0": "P43",
+   "1": "P262"
+  },
+  "Hierarchical|FastDTW": {
+   "0": "P56",
+   "1": "P262"
+  },
+  "HDBSCAN|FastDTW": {
+   "0": "P38",
+   "1": "P262"
+  },
+  "K-Medoids|Euclid|k3": {
+   "0": "P599",
+   "1": "P512",
+   "2": "P79"
+  },
+  "K-Medoids|DTW|k3": {
+   "0": "P285",
+   "1": "P15",
+   "2": "P368"
+  },
+  "K-Medoids|FastDTW|k3": {
+   "0": "P284",
+   "1": "P262",
+   "2": "P43"
+  }
+ }
+}
