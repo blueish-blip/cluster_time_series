@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Segmentasi Pola Penjualan Produk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#2B3340;--mut:#7C8598;--line:#E3E6EC;--bg:#F3F4F7;--blue:#7B9CC8;--apr:#E6B48F}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 'Instrument Sans',system-ui,sans-serif}
+.wrap{display:grid;grid-template-columns:190px minmax(0,1fr);max-width:1260px;margin:0 auto;gap:44px;padding:0 28px}
+nav{position:sticky;top:0;align-self:start;padding:38px 0}
+nav b{font:500 1.15rem 'Newsreader',Georgia,serif;display:block;margin-bottom:20px;line-height:1.25}
+nav a{display:block;padding:6px 0 6px 14px;color:var(--mut);text-decoration:none;border-left:2px solid var(--line);font-size:.9rem}
+nav a:hover{color:var(--ink)}nav a.on{color:var(--ink);border-color:var(--ink);font-weight:600}
+a:focus-visible,select:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+main{padding:44px 0 90px;min-width:0}section{padding-top:54px}
+h1,h2,h3{font-family:'Newsreader',Georgia,serif;font-weight:500;letter-spacing:-.012em;margin:0}
+h1{font-size:clamp(2rem,3.8vw,2.9rem);line-height:1.1;max-width:17ch}h2{font-size:1.65rem;margin-bottom:4px}h3{font-size:1.05rem;margin:0 0 8px}
+.lede{color:var(--mut);max-width:62ch;margin:0 0 22px}
+.hero{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:36px;align-items:start}
+.hero p{max-width:46ch;color:#4A5468}
+dl{margin:22px 0 0;border-top:1px solid var(--line)}dl div{display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-bottom:1px solid var(--line)}
+dt{color:var(--mut)}dd{margin:0;font-weight:600;text-align:right}
+.panel{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px 20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:18px}
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+figure{margin:0}figcaption{font-size:.88rem;font-weight:600;margin-bottom:2px}figcaption span{color:var(--mut);font-weight:400}
+.leg{display:flex;gap:16px;flex-wrap:wrap;font-size:.85rem;color:var(--mut);margin:0 0 8px}.leg i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+table{border-collapse:collapse;width:100%;font-size:.9rem}th{font-weight:500;color:var(--mut);text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+td{padding:9px 10px;border-bottom:1px solid var(--line);white-space:nowrap}tr.top td{background:#F1F5FA;font-weight:600}.num{text-align:right;font-variant-numeric:tabular-nums}
+.bar{display:inline-block;height:7px;border-radius:4px;background:var(--blue);vertical-align:middle;margin-left:8px;opacity:.75}
+.sc{overflow-x:auto}ul.f{padding-left:18px;max-width:78ch}ul.f li{margin:7px 0}
+select{font:inherit;padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);margin-bottom:16px;max-width:100%}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}.chips span{border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:.85rem;background:#fff}
+.flt{display:flex;gap:26px;flex-wrap:wrap;margin:0 0 20px;font-size:.9rem}.flt b{font-weight:600;margin-right:12px}.flt label{margin-right:14px;cursor:pointer;white-space:nowrap}
+.btn{font:inherit;border:1px solid var(--line);background:#fff;border-radius:8px;padding:8px 16px;cursor:pointer;color:var(--ink);margin-top:14px}.btn:hover{border-color:var(--blue)}
+details.panel{margin-top:18px}summary{cursor:pointer;font-weight:600;font-family:'Newsreader',Georgia,serif;font-size:1.05rem}details[open] summary{margin-bottom:12px}.scr{max-height:380px;overflow:auto}tr[data-i]{cursor:pointer}tr[data-i]:hover td{background:#F7F8FA}
+footer{margin-top:60px;color:var(--mut);font-size:.85rem}svg text{font-family:inherit}
+@media(max-width:900px){.wrap{grid-template-columns:1fr;padding:0 16px}nav{display:none}.hero{grid-template-columns:1fr}}
+</style></head><body><div class="wrap">
+<nav><b>Segmentasi<br>pola penjualan</b><a href="#ringkasan">Ringkasan</a><a href="#model">Perbandingan model</a><a href="#jarak">Analisis jarak</a><a href="#profil">Profil cluster</a><a href="#produk">Produk</a></nav>
+<main>
+<section id="ringkasan" style="padding-top:0"><div class="hero"><div>
+<h1>Minggu 28 jadi titik terendah bagi kedua segmen produk</h1><p id="sub"></p><dl id="facts"></dl></div>
+<div class="panel"><h3>Rata-rata pola mingguan per segmen</h3><div class="leg" id="hleg"></div><div id="hero"></div></div></div>
+<h3 style="margin-top:34px">Temuan utama</h3><ul class="f" id="finds"></ul></section>
+
+<section id="model"><h2>Perbandingan 9 model</h2><p class="lede">Tiga metode clustering dikali tiga jarak. Silhouette di jarak sendiri bias oleh skala jarak, jadi pembanding utamanya silhouette lintas-jarak, stabilitas bootstrap, dan keseimbangan ukuran cluster.</p>
+<div class="flt" id="flt"></div>
+<div class="panel sc"><table id="rank"></table></div>
+<h3 style="margin:30px 0 8px">Empat kriteria</h3><div class="leg" id="dleg"></div><div class="panel"><div class="grid4" id="gb"></div></div>
+<div class="grid" style="margin-top:18px"><div class="panel"><h3>Kualitas vs stabilitas</h3><p class="lede" style="margin:0 0 6px;font-size:.88rem">Kanan atas lebih baik; ukuran titik = cakupan produk.</p><div id="sc"></div></div>
+<div class="panel"><h3>Kesamaan pembagian produk antar model (ARI)</h3><div id="ari"></div></div></div>
+<div class="panel" style="margin-top:18px"><h3>Silhouette menurut jumlah cluster (k)</h3><div class="leg" id="kleg"></div><div class="grid" id="ks"></div></div>
+<details class="panel"><summary>HDBSCAN: trade-off silhouette dan noise</summary><p class="lede" style="font-size:.88rem;margin:0 0 8px">Silhouette inti terlihat tinggi karena produk sulit dibuang sebagai noise; silhouette terkoreksi memberi nilai 0 pada noise. Lingkaran garis = parameter terpilih.</p>
+<div class="leg"><span><i style="background:#C9D6E8"></i>Silhouette inti</span><span><i style="background:#7B9CC8"></i>Silhouette terkoreksi</span></div><div class="grid" id="hd"></div></details>
+<details class="panel"><summary>Uji sensitivitas k = 3 dan cophenetic correlation</summary><p class="lede" style="font-size:.88rem;margin:0 0 8px">Apakah urutan metode dan jarak tetap sama bila k dipaksa 3.</p><div class="sc" id="k3"></div>
+<h3 style="margin:22px 0 8px">Cophenetic correlation per linkage (Hierarchical)</h3><div class="sc" id="coph"></div></details></section>
+
+<section id="jarak"><h2>Analisis jarak</h2><p class="lede" id="jl"></p>
+<dl id="dk"></dl><div class="grid" style="margin-top:22px"><div class="panel"><h3>Waktu hitung matriks jarak (detik, skala log)</h3><div id="rt"></div></div>
+<div class="panel"><h3>Kemiripan urutan kedekatan (Spearman)</h3><div id="dg"></div></div></div><p class="lede" id="jn" style="margin-top:18px"></p></section>
+
+<section id="profil"><h2>Profil cluster</h2><p class="lede">Garis tipis adalah sampel anggota, putus-putus rata-rata, dan garis tebal medoid (produk representatif). Semua dalam z-score setelah penghalusan MA-5.</p>
+<select id="msel" aria-label="Pilih model"></select><div class="grid" id="curves"></div>
+<div class="panel sc" style="margin-top:18px"><table id="prof"></table></div>
+<div class="grid" style="margin-top:18px"><div class="panel"><h3>Peta produk (PCA 2 dimensi)</h3><div class="leg" id="pleg"></div><div id="pca"></div></div><div class="panel"><h3>Rata-rata penjualan mingguan, H1 vs H2</h3><div class="leg"><span><i style="background:#C9D6E8"></i>H1 (minggu 0-25)</span><span><i style="background:#7B9CC8"></i>H2 (minggu 26-51)</span></div><div id="h12"></div></div></div>
+<button class="btn" id="dl1">Unduh label cluster (CSV)</button></section>
+
+<section id="produk"><h2>Eksplorasi produk</h2><p class="lede">Hanya produk dengan total penjualan setahun minimal 52 unit yang ikut di-cluster.</p>
+<select id="psel" aria-label="Pilih produk"></select><div class="chips" id="chips"></div>
+<div class="grid" style="margin-top:16px"><div class="panel"><h3>Unit terjual per minggu</h3><div id="pr"></div></div><div class="panel"><h3>Pola setelah penghalusan (z-score)</h3><div id="pz"></div></div></div>
+<h3 style="margin:34px 0 10px">Daftar produk</h3><div class="flt" id="pf"></div><div class="panel scr"><table id="plist"></table></div><button class="btn" id="dl2">Unduh tabel (CSV)</button></section>
+<footer>Sumber: Sales_transaction.csv, 811 produk × 52 minggu. Hasil dihitung dengan pipeline Clustering.ipynb (jarak: Euclidean, DTW window 4, FastDTW radius 1).</footer>
+</main></div>
+<script>
+const D=__DATA__,P=D.prod,M=D.meta,$=s=>document.querySelector(s),wk=[...Array(52).keys()];
+const n=(x,d=2)=>(+x).toLocaleString('id-ID',{minimumFractionDigits:d,maximumFractionDigits:d});
+const mean=a=>a.reduce((s,x)=>s+x,0)/a.length,med=a=>{const s=[...a].sort((x,y)=>x-y),m=s.length>>1;return s.length%2?s[m]:(s[m-1]+s[m])/2};
+const K={ink:'#2B3340',mut:'#7C8598',grid:'#E3E6EC',cl:['#7B9CC8','#E6B48F','#8EBBA3','#B2A4D4','#DBA3AE','#E5D08C'],dk:['#3F6A9E','#B07A45','#4D8A6D','#7A68A8','#A8606E','#A8923E'],noise:'#C9CED8',
+ dist:{Euclid:'#7B9CC8',DTW:'#E6B48F',FastDTW:'#8EBBA3'},meth:{'K-Medoids':'#7B9CC8',Hierarchical:'#B2A4D4',HDBSCAN:'#DBA3AE'}};
+const col=c=>c<0?K.noise:K.cl[c%6],nm=c=>c<0?'Noise':'Cluster '+c,SH={'K-Medoids':'KMed',Hierarchical:'Hier',HDBSCAN:'HDB'};
+const short=c=>{const[a,b]=c.split('|');return SH[a]+' '+b},METH=Object.keys(K.meth),DIS=Object.keys(K.dist);
+const svg=(w,h,s)=>`<svg viewBox="0 0 ${w} ${h}" width="100%" role="img">${s}</svg>`;
+const leg=o=>Object.entries(o).map(([k,c])=>`<span><i style="background:${c}"></i>${k}</span>`).join('');
+function line(ser,o={}){const W=o.w||560,H=o.h||240,L=40,R=10,T=10,B=24,xs=o.xs||wk,ys=ser.flatMap(s=>s.y);
+ let a=o.ymin??Math.min(...ys),b=o.ymax??Math.max(...ys);const p=(b-a)*.08||1;if(o.ymin==null)a-=p;if(o.ymax==null)b+=p;
+ const x0=Math.min(...xs),x1=Math.max(...xs),X=v=>L+(v-x0)/(x1-x0||1)*(W-L-R),Y=v=>T+(b-Math.max(a,Math.min(b,v)))/(b-a)*(H-T-B);let g='';
+ if(o.band)g+=`<rect x="${X(o.band[0])}" y="${T}" width="${X(o.band[1])-X(o.band[0])}" height="${H-T-B}" fill="#E6B48F" opacity=".18"><title>Minggu ${o.band[0]} sampai ${o.band[1]}</title></rect>`;
+ for(let i=0;i<=4;i++){const v=a+(b-a)*i/4;g+=`<line x1="${L}" x2="${W-R}" y1="${Y(v)}" y2="${Y(v)}" stroke="${K.grid}"/><text x="${L-6}" y="${Y(v)+4}" text-anchor="end" font-size="10.5" fill="${K.mut}">${n(v,o.yd??1)}</text>`}
+ (o.xt||[x0,x1]).forEach(v=>g+=`<text x="${X(v)}" y="${H-6}" text-anchor="middle" font-size="10.5" fill="${K.mut}">${v}</text>`);
+ ser.forEach(s=>{g+=`<path d="${s.y.map((v,i)=>(i?'L':'M')+X(xs[i]).toFixed(1)+' '+Y(v).toFixed(1)).join('')}" fill="none" stroke="${s.c}" stroke-width="${s.w||2}" ${s.d?'stroke-dasharray="5 4"':''} opacity="${s.o??1}" stroke-linejoin="round"><title>${s.t||''}</title></path>`;
+  if(o.dots)s.y.forEach((v,i)=>g+=`<circle cx="${X(xs[i])}" cy="${Y(v)}" r="3.5" fill="${s.c}"/>`)});return svg(W,H,g)}
+function barsH(rows,o={}){const W=o.w||560,rh=30,H=rows.length*rh+4,L=o.L||170,R=70,v=r=>o.log?Math.log10(r.v)+3:r.v,mx=Math.max(...rows.map(v));
+ return svg(W,H,rows.map((r,i)=>{const y=i*rh+2,w=Math.max(3,v(r)/mx*(W-L-R));return `<text x="${L-8}" y="${y+rh/2}" text-anchor="end" dominant-baseline="middle" font-size="12" fill="${K.ink}">${r.l}</text><rect x="${L}" y="${y+5}" width="${w}" height="${rh-10}" rx="3" fill="${r.c}"/><text x="${L+w+6}" y="${y+rh/2}" dominant-baseline="middle" font-size="11.5" fill="${K.mut}">${r.t}</text>`}).join(''))}
+function colBars(vals,c,o={}){const W=o.w||560,H=o.h||200,L=40,B=22,T=8,mx=Math.max(...vals,1),bw=(W-L-8)/vals.length;let g='';
+ for(let i=0;i<=3;i++){const v=mx*i/3,y=H-B-v/mx*(H-B-T);g+=`<line x1="${L}" x2="${W-8}" y1="${y}" y2="${y}" stroke="${K.grid}"/><text x="${L-6}" y="${y+4}" text-anchor="end" font-size="10.5" fill="${K.mut}">${Math.round(v)}</text>`}
+ vals.forEach((v,i)=>{const h=v/mx*(H-B-T);g+=`<rect x="${L+i*bw+1}" y="${H-B-h}" width="${bw-2}" height="${h}" rx="1.5" fill="${c}"><title>Minggu ${i}: ${v} unit</title></rect>`});
+ [0,13,26,39,51].forEach(i=>g+=`<text x="${L+i*bw+bw/2}" y="${H-6}" text-anchor="middle" font-size="10.5" fill="${K.mut}">${i}</text>`);return svg(W,H,g)}
+function gbars(m,rows,ms,ds){const W=260,H=190,B=34,T=8,mx=Math.max(...rows.map(r=>r[m]))*1.1,gw=W/ms.length;let g=`<line x1="0" x2="${W}" y1="${H-B}" y2="${H-B}" stroke="${K.grid}"/>`;
+ ms.forEach((a,i)=>{ds.forEach((d,j)=>{const r=rows.find(x=>x.Metode==a&&x.Jarak==d),h=r[m]/mx*(H-B-T),bw=(gw-12)/ds.length;g+=`<rect x="${i*gw+6+j*bw}" y="${H-B-h}" width="${bw-2}" height="${h}" rx="2" fill="${K.dist[d]}"><title>${a} ${d}: ${n(r[m],3)}</title></rect>`});
+  g+=`<text x="${i*gw+gw/2}" y="${H-16}" text-anchor="middle" font-size="10.5" fill="${K.mut}">${a=='Hierarchical'?'Hier.':a}</text>`});return svg(W,H,g)}
+function scatter(r0){const W=520,H=430,L=44,R=76,T=12,B=34,xs=r0.map(r=>r['Sil lintas-jarak']),ys=r0.map(r=>r['Stabilitas ARI']);
+ const a=Math.min(...xs)-.01,b=Math.max(...xs)+.01,c=Math.min(...ys)-.06,d=Math.min(1.02,Math.max(...ys)+.05),X=v=>L+(v-a)/(b-a)*(W-L-R),Y=v=>T+(d-v)/(d-c)*(H-T-B);let g='';
+ for(let i=0;i<=4;i++){const v=c+(d-c)*i/4;g+=`<line x1="${L}" x2="${W-R}" y1="${Y(v)}" y2="${Y(v)}" stroke="${K.grid}"/><text x="${L-6}" y="${Y(v)+4}" text-anchor="end" font-size="10.5" fill="${K.mut}">${n(v,2)}</text>`;const u=a+(b-a)*i/4;g+=`<text x="${X(u)}" y="${H-14}" text-anchor="middle" font-size="10.5" fill="${K.mut}">${n(u,2)}</text>`}
+ g+=`<text x="${(L+W-R)/2}" y="${H-1}" text-anchor="middle" font-size="11" fill="${K.mut}">Silhouette lintas-jarak</text>`;
+ r0.forEach(r=>{const x=X(r['Sil lintas-jarak']),y=Y(r['Stabilitas ARI']);g+=`<circle cx="${x}" cy="${y}" r="${4+r['Cakupan (%)']/100*6}" fill="${K.meth[r.Metode]}" fill-opacity=".85" stroke="#fff" stroke-width="1.5"><title>${r.Metode} ${r.Jarak}: sil ${n(r['Sil lintas-jarak'],3)}, ARI ${n(r['Stabilitas ARI'],3)}</title></circle><text x="${x+10}" y="${y+4}" font-size="10" fill="${K.ink}">${SH[r.Metode]} ${r.Jarak}</text>`});return svg(W,H,g)}
+function heat(){const A=D.ari.m,N=D.ari.n,c=N.length,s=46,L=88,T=4,W=L+c*s,H=T+c*s+72,mix=v=>`rgb(${[243,244,247].map((x,i)=>Math.round(x+([123,156,200][i]-x)*v))})`;let g='';
+ N.forEach((e,i)=>{g+=`<text x="${L-8}" y="${T+i*s+s/2+4}" text-anchor="end" font-size="10.5">${short(e)}</text><text transform="translate(${L+i*s+s/2+4},${T+c*s+12}) rotate(-45)" text-anchor="end" font-size="10.5">${short(e)}</text>`;
+  A[i].forEach((v,j)=>g+=`<rect x="${L+j*s}" y="${T+i*s}" width="${s-2}" height="${s-2}" rx="3" fill="${mix(v)}"><title>${short(e)} dan ${short(N[j])}: ${n(v,2)}</title></rect><text x="${L+j*s+s/2-1}" y="${T+i*s+s/2+3}" text-anchor="middle" font-size="10" fill="${v>.6?'#fff':K.ink}">${n(v,2)}</text>`)});return svg(W,H,g)}
+const lab=c=>c.endsWith('|k3')?`K-Medoids + ${c.split('|')[1]} (k=3)`:`${c.split('|')[0]} + ${c.split('|')[1]} (${M.params[c]})`;
+function prof(c){const g={};P.lab[c].forEach((l,i)=>(g[l]??=[]).push(i));return Object.keys(g).map(Number).sort((a,b)=>a-b).map(l=>{const ix=g[l],h1=mean(ix.map(i=>P.h1[i])),h2=mean(ix.map(i=>P.h2[i]));
+ return{l,ix,n:ix.length,vol:ix.reduce((s,i)=>s+P.tot[i],0),med:med(ix.map(i=>P.tot[i])),h1,h2,chg:100*(h2/h1-1),mu:wk.map(w=>mean(ix.map(i=>P.z[i][w])))}})}
+const TOT=P.tot.reduce((a,b)=>a+b,0),save=(f,t)=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t],{type:'text/csv'}));a.download=f;a.click();URL.revokeObjectURL(a.href)};
+const bk=M.best_model.join('|'),bp=prof(bk),br=D.cmp.find(r=>r.Metode==M.best_model[0]&&r.Jarak==M.best_model[1]);
+
+// ---- Ringkasan
+const cls0=bp.filter(p=>p.l>=0);
+$('#sub').textContent=`Pada model terbaik, ${P.codes.length} produk terbagi menjadi ${cls0.length} segmen: `+cls0.map(p=>`${nm(p.l).toLowerCase()} berisi ${p.n} produk dengan median ${Math.round(p.med)} unit per tahun dan perubahan paruh kedua ${n(p.chg,0)}% terhadap paruh pertama`).join(', sedangkan ')+'.';
+$('#facts').innerHTML=[['Produk dianalisis',`${P.codes.length} dari ${M.n_total}`],['Model terbaik',`${M.best_model.join(' + ')} (${M.best_param})`],['Silhouette lintas-jarak',n(br['Sil lintas-jarak'],3)],['Stabilitas bootstrap (ARI)',n(br['Stabilitas ARI'],3)],['Cakupan produk',n(br['Cakupan (%)'],0)+'%']].map(([a,b])=>`<div><dt>${a}</dt><dd>${b}</dd></div>`).join('');
+$('#hleg').innerHTML=leg(Object.fromEntries(cls0.map(p=>[`${nm(p.l)} (${p.n} produk)`,col(p.l)])));
+$('#hero').innerHTML=line(cls0.map(p=>({y:p.mu,c:col(p.l),w:3,t:nm(p.l)})),{h:300,band:[22,28],xt:[0,13,26,39,51]});
+const top3=D.rank.slice(0,3),km=D.cmp.filter(r=>r.Metode=='K-Medoids'),hd=D.cmp.filter(r=>r.Metode=='HDBSCAN'),rt=M.runtime_s,fe=M.fastdtw_err,rg=a=>Math.max(...a)-Math.min(...a);
+$('#finds').innerHTML=[`<b>${M.best_model.join(' + ')}</b> peringkat 1, dan K-Medoids menempati ${top3.filter(r=>r.Metode=='K-Medoids').length} dari 3 peringkat teratas (stabilitas ARI ${n(Math.min(...km.map(r=>r['Stabilitas ARI'])),2)} sampai ${n(Math.max(...km.map(r=>r['Stabilitas ARI'])),2)}).`,
+ `HDBSCAN membuang ${n(100-Math.max(...hd.map(r=>r['Cakupan (%)'])),0)} sampai ${n(100-Math.min(...hd.map(r=>r['Cakupan (%)'])),0)}% produk sebagai noise, tanda bahwa pola penjualan lebih menyerupai kontinum daripada kelompok padat.`,
+ `Pilihan jarak berpengaruh kecil: selisih silhouette lintas-jarak antar jarak pada K-Medoids hanya ${n(rg(km.map(r=>r['Sil lintas-jarak'])),3)}, jauh di bawah simpangan baku ARI bootstrap (${n(Math.min(...km.map(r=>r['ARI sd'])),2)} sampai ${n(Math.max(...km.map(r=>r['ARI sd'])),2)}).`,
+ `FastDTW ${n(rt.FastDTW/rt.DTW,0)} kali lebih lambat dari DTW ber-window pada deret ${M.n_weeks} minggu, dengan galat rata-rata ${n(fe.mean*100,1)}% terhadap DTW penuh.`,
+ `Silhouette tertinggi hanya ${n(Math.max(...D.cmp.map(r=>r['Sil (jarak sendiri)'])),2)}, jadi segmen sebaiknya dibaca sebagai kecenderungan pola, bukan kelompok yang terpisah tegas.`].map(t=>`<li>${t}</li>`).join('');
+
+// ---- Perbandingan
+const tbl=(rows,cols,fmt={})=>`<table><tr>${cols.map(c=>`<th class="${typeof rows[0][c]=='number'?'num':''}">${c}</th>`).join('')}</tr>`+rows.map(r=>`<tr>${cols.map(c=>`<td class="${typeof r[c]=='number'?'num':''}">${typeof r[c]=='number'?n(r[c],fmt[c]??3):r[c]}</td>`).join('')}</tr>`).join('')+'</table>';
+const fs={m:new Set(METH),d:new Set(DIS)},pick=(v,all)=>v.size?v:new Set(all);
+$('#flt').innerHTML=[['Metode',METH,'m'],['Jarak',DIS,'d']].map(([t,a,k])=>`<div><b>${t}</b>${a.map(x=>`<label><input type="checkbox" data-k="${k}" value="${x}" checked> ${x}</label>`).join('')}</div>`).join('');
+$('#flt').onchange=e=>{const t=e.target;t.checked?fs[t.dataset.k].add(t.value):fs[t.dataset.k].delete(t.value);renderModel()};
+function hdPanel(d){const r=D.hd.filter(x=>x.Jarak==d&&x.n_cluster>=2&&x['Silhouette inti']!=null),W=300,H=230,L=38,B=28,T=8,R=8,ys=r.flatMap(x=>[x['Silhouette inti'],x['Silhouette terkoreksi']]),a=Math.min(0,...ys),b=Math.max(...ys)*1.08,X=v=>L+v/100*(W-L-R),Y=v=>T+(b-v)/(b-a)*(H-T-B);let g='';
+ for(let i=0;i<=4;i++){const v=a+(b-a)*i/4;g+=`<line x1="${L}" x2="${W-R}" y1="${Y(v)}" y2="${Y(v)}" stroke="${K.grid}"/><text x="${L-6}" y="${Y(v)+4}" text-anchor="end" font-size="10.5" fill="${K.mut}">${n(v,2)}</text>`}
+ [0,25,50,75,100].forEach(v=>g+=`<text x="${X(v)}" y="${H-14}" text-anchor="middle" font-size="10.5" fill="${K.mut}">${v}</text>`);g+=`<text x="${(L+W-R)/2}" y="${H-1}" text-anchor="middle" font-size="10.5" fill="${K.mut}">Produk noise (%)</text>`;
+ r.forEach(x=>{const cx=X(x['Noise (%)']),t=`mcs ${x.min_cluster_size}, ms ${x.min_samples}, ${x.n_cluster} cluster`;g+=`<circle cx="${cx}" cy="${Y(x['Silhouette inti'])}" r="4.5" fill="#C9D6E8"><title>${t}: inti ${n(x['Silhouette inti'],3)}</title></circle><circle cx="${cx}" cy="${Y(x['Silhouette terkoreksi'])}" r="4.5" fill="#7B9CC8"><title>${t}: terkoreksi ${n(x['Silhouette terkoreksi'],3)}</title></circle>`;if(x.Terbaik)g+=`<circle cx="${cx}" cy="${Y(x['Silhouette terkoreksi'])}" r="9" fill="none" stroke="${K.ink}" stroke-width="1.4"/>`});
+ return `<figure><figcaption>${d}</figcaption>${svg(W,H,g)}</figure>`}
+function renderModel(){const fm=pick(fs.m,METH),fd=pick(fs.d,DIS),ok=r=>fm.has(r.Metode)&&fd.has(r.Jarak),R=D.cmp.filter(ok),RK=D.rank.filter(ok),ms=METH.filter(m=>fm.has(m)),ds=DIS.filter(d=>fd.has(d)),mx=k=>Math.max(...RK.map(r=>r[k])),dl=Object.fromEntries(ds.map(d=>[d,K.dist[d]]));
+ $('#rank').innerHTML=`<tr><th>#</th><th>Metode</th><th>Jarak</th><th>Parameter</th><th class="num">Silhouette lintas-jarak</th><th class="num">Stabilitas ARI</th><th class="num">Keseimbangan</th><th class="num">Rata-rata rank</th></tr>`+
+  RK.map(r=>`<tr class="${r['Peringkat']==1?'top':''}"><td>${r['Peringkat']}</td><td>${r.Metode}</td><td>${r.Jarak}</td><td>${r.Parameter}</td>`+[['Sil lintas-jarak',3],['Stabilitas ARI',3],['Keseimbangan',2]].map(([k,d])=>`<td class="num">${n(r[k],d)}<span class="bar" style="width:${r[k]/mx(k)*50}px"></span></td>`).join('')+`<td class="num">${n(r['Rata-rata rank'],2)}</td></tr>`).join('');
+ $('#dleg').innerHTML=leg(dl);$('#kleg').innerHTML=leg(dl);
+ $('#gb').innerHTML=[['Sil (jarak sendiri)','Silhouette di jarak sendiri'],['Sil lintas-jarak','Silhouette lintas-jarak'],['Stabilitas ARI','Stabilitas bootstrap'],['Keseimbangan','Keseimbangan cluster']].map(([k,t])=>`<figure><figcaption>${t}</figcaption>${gbars(k,R,ms,ds)}</figure>`).join('');
+ $('#sc').innerHTML=scatter(R);
+ const kms=['K-Medoids','Hierarchical'].filter(m=>fm.has(m));
+ $('#ks').innerHTML=kms.length?kms.map(m=>{const r=D.ks.filter(x=>x.Metode==m),xs=[...new Set(r.map(x=>x.k))];return `<figure><figcaption>${m}</figcaption>${line(ds.map(d=>({y:r.filter(x=>x.Jarak==d).map(x=>x.Silhouette),c:K.dist[d],dots:1,t:d})),{xs,w:420,h:240,dots:1,xt:xs,yd:2})}</figure>`}).join(''):'<p class="lede">Pilih K-Medoids atau Hierarchical untuk melihat grafik ini.</p>';
+ $('#hd').innerHTML=fm.has('HDBSCAN')?ds.map(hdPanel).join(''):'<p class="lede">Pilih HDBSCAN pada filter metode untuk melihat grafik ini.</p>'}
+renderModel();$('#ari').innerHTML=heat();
+$('#k3').innerHTML=tbl(D.k3,['Metode','Jarak','Sil (jarak sendiri)','Sil lintas-jarak','Keseimbangan','Ukuran cluster']);
+$('#coph').innerHTML=tbl(D.coph,['Jarak','single','complete','average','ward']);
+
+// ---- Jarak
+$('#dk').innerHTML=[['Galat rata-rata FastDTW terhadap DTW penuh',n(fe.mean*100,1)+'%'],['Galat persentil ke-95',n(fe.p95*100,1)+'%'],['Pasangan yang persis sama dengan DTW penuh',n(fe.exact_share*100,0)+'%'],['Waktu FastDTW dibanding DTW ber-window',n(rt.FastDTW/rt.DTW,0)+' kali lebih lama']].map(([a,b])=>`<div><dt>${a}</dt><dd>${b}</dd></div>`).join('');
+$('#jn').textContent=`Secara konstruksi, DTW ber-window ${M.dtw_window} tidak melebihi Euclidean dan FastDTW tidak lebih kecil dari DTW penuh. Silhouette DTW di jarak sendiri lebih tinggi sebagian besar karena efek skala (jarak DTW lebih rapat), sehingga perbandingan antar jarak memakai silhouette lintas-jarak.`;
+$('#jl').textContent=`DTW memakai window Sakoe-Chiba ${M.dtw_window} minggu dan FastDTW radius ${M.fdtw_radius}. FastDTW persis sama dengan DTW penuh pada ${n(fe.exact_share*100,0)}% pasangan, galat median ${n(fe.median*100,1)}% dan persentil ke-95 ${n(fe.p95*100,0)}%.`;
+$('#rt').innerHTML=barsH(Object.entries(rt).map(([k,v])=>({l:k,v,c:K.dist[k],t:n(v,v<1?3:1)+' s'})),{log:1,L:80});
+$('#dg').innerHTML=barsH(D.dagr.map(r=>({l:r.Perbandingan.replace(' (eksak)',''),v:r['Spearman rho'],c:'#B2A4D4',t:n(r['Spearman rho'],3)})),{L:190});
+
+// ---- Profil
+const opts=Object.keys(M.params).concat(DIS.map(d=>`K-Medoids|${d}|k3`));
+$('#msel').innerHTML=opts.map(c=>`<option value="${c}">${lab(c)}${c==bk?' (terbaik)':''}</option>`).join('');$('#msel').value=bk;
+function renderProf(c){const pr=prof(c),cl=pr.filter(p=>p.l>=0);
+ $('#curves').innerHTML=cl.map(p=>{const st=Math.ceil(p.ix.length/40),ser=p.ix.filter((_,k)=>k%st==0).map(i=>({y:P.z[i],c:col(p.l),w:.8,o:.25}));
+  ser.push({y:p.mu,c:K.ink,d:1,w:2,t:'Rata-rata'});const md=M.medoids[c]&&M.medoids[c][p.l];if(md)ser.push({y:P.z[P.codes.indexOf(md)],c:K.dk[p.l%6],w:2.8,t:'Medoid '+md});
+  return `<div class="panel"><figure><figcaption>${nm(p.l)} <span>${p.n} produk${md?', medoid '+md:''}</span></figcaption>${line(ser,{w:420,h:230,ymin:-2.5,ymax:3.5,xt:[0,13,26,39,51]})}</figure></div>`}).join('');
+ $('#prof').innerHTML=`<tr><th>Cluster</th><th class="num">Produk</th><th class="num">% produk</th><th class="num">% volume</th><th class="num">Median unit/tahun</th><th class="num">Rata-rata H1</th><th class="num">Rata-rata H2</th><th class="num">H2 vs H1</th></tr>`+
+  pr.map(p=>`<tr><td><i style="display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:8px;background:${col(p.l)}"></i>${nm(p.l)}</td><td class="num">${p.n}</td><td class="num">${n(100*p.n/P.codes.length,0)}%</td><td class="num">${n(100*p.vol/TOT,0)}%</td><td class="num">${n(p.med,0)}</td><td class="num">${p.l<0?'':n(p.h1,1)}</td><td class="num">${p.l<0?'':n(p.h2,1)}</td><td class="num">${n(p.chg,0)}%</td></tr>`).join('')}
+let curM=bk;
+function pca(c){const W=480,H=330,L=8,T=8,xs=P.pc1,ys=P.pc2,x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys),X=v=>L+(v-x0)/(x1-x0)*(W-2*L),Y=v=>T+(y1-v)/(y1-y0)*(H-2*T);
+ return svg(W,H,`<rect width="${W}" height="${H}" rx="6" fill="#FAFBFC" stroke="${K.grid}"/>`+P.codes.map((k,i)=>`<circle cx="${X(xs[i]).toFixed(1)}" cy="${Y(ys[i]).toFixed(1)}" r="3.6" fill="${col(P.lab[c][i])}" fill-opacity=".8" stroke="#fff" stroke-width=".7"><title>${k}: ${nm(P.lab[c][i])}</title></circle>`).join(''))}
+function h12(pr){const W=480,H=330,L=40,B=30,T=10,cl=pr.filter(p=>p.l>=0),mx=Math.max(...cl.flatMap(p=>[p.h1,p.h2]))*1.12,gw=(W-L-8)/cl.length;let g='';
+ for(let i=0;i<=4;i++){const v=mx*i/4,y=H-B-v/mx*(H-B-T);g+=`<line x1="${L}" x2="${W-8}" y1="${y}" y2="${y}" stroke="${K.grid}"/><text x="${L-6}" y="${y+4}" text-anchor="end" font-size="10.5" fill="${K.mut}">${n(v,0)}</text>`}
+ cl.forEach((p,i)=>{[[p.h1,'#C9D6E8'],[p.h2,'#7B9CC8']].forEach(([v,c],j)=>{const h=v/mx*(H-B-T),bw=Math.min(46,gw/2-10),x=L+i*gw+gw/2-bw-2+j*(bw+4);g+=`<rect x="${x}" y="${H-B-h}" width="${bw}" height="${h}" rx="3" fill="${c}"/><text x="${x+bw/2}" y="${H-B-h-5}" text-anchor="middle" font-size="10.5" fill="${K.ink}">${n(v,1)}</text>`});g+=`<text x="${L+i*gw+gw/2}" y="${H-10}" text-anchor="middle" font-size="11" fill="${K.ink}">${nm(p.l)}</text>`});return svg(W,H,g)}
+function extra(c){curM=c;const pr=prof(c);$('#pleg').innerHTML=leg(Object.fromEntries(pr.map(p=>[nm(p.l),col(p.l)])));$('#pca').innerHTML=pca(c);$('#h12').innerHTML=h12(pr)}
+$('#msel').onchange=e=>{renderProf(e.target.value);extra(e.target.value)};renderProf(bk);extra(bk);
+$('#dl1').onclick=()=>save('label_cluster.csv',['Product_Code,total_sales,cluster',...P.codes.map((k,i)=>`${k},${P.tot[i]},${P.lab[curM][i]}`)].join('\n'));
+
+// ---- Produk
+$('#psel').innerHTML=P.codes.map((c,i)=>`<option value="${i}">${c} (${P.tot[i]} unit/tahun)</option>`).join('');
+function renderProd(i){const l=P.lab[bk][i];$('#pr').innerHTML=colBars(P.raw[i],'#BFD0E6');$('#pz').innerHTML=line([{y:P.z[i],c:col(l),w:3,t:'z-score'}],{xt:[0,13,26,39,51]});
+ $('#chips').innerHTML=`<span><b>${nm(l)}</b> pada model terbaik</span><span>H1 ${n(P.h1[i],1)} → H2 ${n(P.h2[i],1)} unit/minggu</span>`+Object.keys(M.params).map(c=>`<span>${short(c)}: ${nm(P.lab[c][i])}</span>`).join('')}
+$('#psel').onchange=e=>renderProd(+e.target.value);renderProd(0);
+
+const pcl=[...new Set(P.lab[bk])].sort((a,b)=>a-b),ps=new Set(pcl);let lix=[];
+$('#pf').innerHTML=`<div><b>Cluster (model terbaik)</b>${pcl.map(c=>`<label><input type="checkbox" value="${c}" checked> ${nm(c)}</label>`).join('')}</div>`;
+function renderList(){lix=P.codes.map((_,i)=>i).filter(i=>ps.has(P.lab[bk][i])).sort((a,b)=>P.tot[b]-P.tot[a]);
+ $('#plist').innerHTML=`<tr><th>Produk</th><th class="num">Total unit</th><th class="num">H1</th><th class="num">H2</th><th>Cluster</th></tr>`+lix.map(i=>`<tr data-i="${i}" title="Klik untuk melihat polanya"><td>${P.codes[i]}</td><td class="num">${P.tot[i]}</td><td class="num">${n(P.h1[i],1)}</td><td class="num">${n(P.h2[i],1)}</td><td>${nm(P.lab[bk][i])}</td></tr>`).join('')}
+$('#pf').onchange=e=>{const t=e.target,v=+t.value;t.checked?ps.add(v):ps.delete(v);renderList()};
+$('#plist').onclick=e=>{const r=e.target.closest('tr[data-i]');if(r){$('#psel').value=r.dataset.i;renderProd(+r.dataset.i);$('#psel').scrollIntoView({block:'center'})}};
+$('#dl2').onclick=()=>save('produk_cluster.csv',['Product_Code,total_unit,H1,H2,cluster',...lix.map(i=>`${P.codes[i]},${P.tot[i]},${P.h1[i]},${P.h2[i]},${nm(P.lab[bk][i])}`)].join('\n'));renderList();
+
+// ---- nav aktif
+const links=[...document.querySelectorAll('nav a')],io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)links.forEach(a=>a.classList.toggle('on',a.hash=='#'+e.target.id))}),{rootMargin:'-30% 0px -60% 0px'});
+document.querySelectorAll('main section').forEach(s=>io.observe(s));
+</script></body></html>
